@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grade Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        // Clear the prediction text after 1 minute
+        function clearPrediction() {
+            setTimeout(() => {
+                const predictionElement = document.getElementById("prediction-text");
+                if (predictionElement) {
+                    predictionElement.textContent = "";
+                }
+            }, 60000); // 60000ms = 1 minute
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        {% if prediction_text %}
+            <h3 id="prediction-text">{{ prediction_text }}</h3>
+            <script>
+                clearPrediction();
+            </script>
+        {% endif %}
+
+
+        <h1>Predict Student Final Grade</h1>
+        <form method="POST" action="/predict">
+            <label for="AttendanceRate">Attendance Rate (%):</label>
+            <input type="number" name="AttendanceRate" id="AttendanceRate" required step="any" placeholder="Enter attendance rate">
+            
+            <label for="StudyHoursPerWeek">Study Hours Per Week:</label>
+            <input type="number" name="StudyHoursPerWeek" id="StudyHoursPerWeek" required step="any" placeholder="Enter study hours per week">
+            
+            <label for="PreviousGrade">Previous Grade:</label>
+            <input type="number" name="PreviousGrade" id="PreviousGrade" required step="any" placeholder="Enter previous grade">
+            
+            <label for="ExtracurricularActivities">Extracurricular Activities (count):</label>
+            <input type="number" name="ExtracurricularActivities" id="ExtracurricularActivities" required step="1" placeholder="Enter number of extracurricular activities">
+            
+            <label for="ParentalSupport">Parental Support (0 or 1):</label>
+            <input type="number" name="ParentalSupport" id="ParentalSupport" required step="1" min="0" max="1" placeholder="Enter 0 (No) or 1 (Yes)">
+            
+            <button type="submit">Predict</button>
+        </form>
+        
+    </div>
+</body>
+</html>
