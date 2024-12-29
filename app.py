@@ -1,12 +1,23 @@
 import joblib
 import pandas as pd
 from flask import Flask, render_template, request
+from dotenv import load_dotenv
+import os
+from flask_cors import CORS
+
+
+load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
+
+#Get Environment Variables
+app.config['DEBUG'] = os.environ.get('FLASK_DEBUG')
 
 # Load the model
 with open("student_performance_model.pkl", "rb") as file:
     model = joblib.load(file)
+    
 print(f"Loaded model type: {type(model)}")
 
 @app.route('/')
@@ -47,4 +58,4 @@ def predict():
         )
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
